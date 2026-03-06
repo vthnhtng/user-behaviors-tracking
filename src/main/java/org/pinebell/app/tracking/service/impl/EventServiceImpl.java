@@ -13,39 +13,40 @@ import org.pinebell.app.tracking.service.EventService;
 @Service
 public class EventServiceImpl implements EventService {
 
-    private static final Logger log = LoggerFactory.getLogger(EventServiceImpl.class);
+    // private static final Logger log = LoggerFactory.getLogger(EventServiceImpl.class);
 
-    private final KafkaTemplate<String, UserEvent> kafkaTemplate;
+    // private final KafkaTemplate<String, UserEvent> kafkaTemplate;
 
-    @Value("${spring.kafka.producer.topic}")
-    private String topic;
+    // @Value("${spring.kafka.producer.topic}")
+    // private String topic;
 
-    public EventServiceImpl(KafkaTemplate<String, UserEvent> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+    // public EventServiceImpl(KafkaTemplate<String, UserEvent> kafkaTemplate) {
+    //     this.kafkaTemplate = kafkaTemplate;
+    // }
 
     @Override
     public void processEvent(UserEvent userEvent) {
-        try {
-            // Use sessionId as partition key for ordering within sessions
-            String partitionKey = userEvent.sessionId();
+        return;
+        // try {
+        //     // Use sessionId as partition key for ordering within sessions
+        //     String partitionKey = userEvent.sessionId();
 
-            kafkaTemplate.send(topic, partitionKey, userEvent)
-                .whenComplete((result, ex) -> {
-                    if (ex != null) {
-                        log.error("Failed to send event {} to Kafka: {}",
-                            userEvent.eventId(), ex.getMessage());
-                    } else {
-                        log.debug("Event {} sent to topic {} partition {} at offset {}",
-                            userEvent.eventId(),
-                            result.getRecordMetadata().topic(),
-                            result.getRecordMetadata().partition(),
-                            result.getRecordMetadata().offset());
-                    }
-                });
-        } catch (Exception e) {
-            log.error("Error processing event {}: {}", userEvent.eventId(), e.getMessage(), e);
-            throw new EventProcessingException("Failed to process event: " + userEvent.eventId(), e);
-        }
+        //     kafkaTemplate.send(topic, partitionKey, userEvent)
+        //         .whenComplete((result, ex) -> {
+        //             if (ex != null) {
+        //                 log.error("Failed to send event {} to Kafka: {}",
+        //                     userEvent.eventId(), ex.getMessage());
+        //             } else {
+        //                 log.debug("Event {} sent to topic {} partition {} at offset {}",
+        //                     userEvent.eventId(),
+        //                     result.getRecordMetadata().topic(),
+        //                     result.getRecordMetadata().partition(),
+        //                     result.getRecordMetadata().offset());
+        //             }
+        //         });
+        // } catch (Exception e) {
+        //     log.error("Error processing event {}: {}", userEvent.eventId(), e.getMessage(), e);
+        //     throw new EventProcessingException("Failed to process event: " + userEvent.eventId(), e);
+        // }
     }
 }

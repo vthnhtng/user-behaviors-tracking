@@ -11,7 +11,7 @@
 	<groupId>org.pinebell</groupId>
 	<artifactId>app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>e-commerce-user-behaviors-tracker</name>
+	<name>tracking</name>
 	<description>Project of an E-commerce user behaviors tracking service</description>
 	<url/>
 	<licenses>

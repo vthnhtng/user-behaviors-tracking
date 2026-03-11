@@ -3,10 +3,21 @@ package org.pinebell.app.tracking.model;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class UserEvent {
+
+    @NotBlank(message = "userId is required")
     private String userId;
+
+    @NotNull(message = "eventType is required")
     private EventType eventType;
+
     private LocalDateTime timestamp;
+
+    @Size(max = 10000, message = "Payload too large")
     private Map<String, Object> payload;
 
     public UserEvent() {

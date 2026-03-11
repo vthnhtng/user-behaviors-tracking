@@ -13,10 +13,16 @@ public class EventConsumer {
 
     @KafkaListener(topics = "${kafka.producer.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(UserEvent event) {
-        logger.info("Received event: userId={}, eventType={}, timestamp={}, payload={}",
-                event.getUserId(),
-                event.getEventType(),
-                event.getTimestamp(),
-                event.getPayload());
+        try {
+            logger.info("Received event: userId={}, eventType={}, timestamp={}, payload={}",
+                    event.getUserId(),
+                    event.getEventType(),
+                    event.getTimestamp(),
+                    event.getPayload());
+            // Process event here
+        } catch (Exception e) {
+            logger.error("Error processing event: {}", event, e);
+            throw e; // Let Kafka retry
+        }
     }
 }

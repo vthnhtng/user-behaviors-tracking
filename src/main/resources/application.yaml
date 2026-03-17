@@ -1,6 +1,9 @@
 spring:
   application:
     name: tracking
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
@@ -17,3 +20,15 @@ spring:
       retries: 3
       properties:
         enable.idempotence: true
+
+clickhouse:
+  datasource:
+    url: jdbc:ch:http://localhost:8123/tracking
+    username: default
+    password:
+    driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
+    pool-size: 10
+    min-idle: 2
+    connection-timeout: 30000
+    idle-timeout: 600000
+    schema-location: db/clickhouse/schema.sql

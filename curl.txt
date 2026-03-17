@@ -1,0 +1,1 @@
+curl -X POST http://localhost:8080/api/v1/send -H "Content-Type: application/json" -d '{"userId": "123", "eventType": "page_view", "payload": {"page": "/home"}}'

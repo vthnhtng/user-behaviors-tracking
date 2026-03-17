@@ -31,9 +31,11 @@ public class KafkaProducerService implements ProducerService {
     @Override
     public void publish(UserEventRequestDTO event) {
         try {
-            String jsonMessage = objectMapper.writeValueAsString(event);
+            UserEventRequestDTO processedEvent = preprocessEvent(event);
+
+            String jsonMessage = objectMapper.writeValueAsString(processedEvent);
             CompletableFuture<SendResult<String, String>> future =
-                kafkaTemplate.send(topic, event.getUserId(), jsonMessage);
+                kafkaTemplate.send(topic, processedEvent.getUserId(), jsonMessage);
 
             future.whenComplete((result, ex) -> {
                 if (ex == null) {
@@ -58,5 +60,12 @@ public class KafkaProducerService implements ProducerService {
                     e);
             throw new RuntimeException("Failed to serialize event", e);
         }
+    }
+
+    private UserEventRequestDTO preprocessEvent(UserEventRequestDTO event) {
+        // TODO: inject list of preprocessors then loop through them
+        event.setEventType(event.getEventType().toUpperCase());
+
+        return event;
     }
 }
